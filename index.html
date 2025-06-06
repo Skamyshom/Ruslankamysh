@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфолио Руслана Камышанова</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4e54c8;
+            --secondary: #8f94fb;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 10px;
+            opacity: 0.85;
+            color: #e2e2e2;
+        }
+        
+        .subtitle-bottom {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.8;
+            color: #d0d0d0;
+            font-style: italic;
+        }
+        
+        .admin-panel {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 10px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 250px;
+            height: 100px; /* Фиксированная высота */
+            overflow: hidden;
+            transition: height 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .admin-panel.expanded {
+            height: auto;
+        }
+        
+        .admin-panel h2 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        .admin-panel p {
+            font-size: 0.7rem;
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+        
+        .upload-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .upload-area {
+            flex: 1;
+            min-width: 200px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(78, 84, 200, 0.1);
+        }
+        
+        .upload-area i {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .upload-area p {
+            font-size: 0.7rem;
+            margin-bottom: 10px;
+            color: #d0d0d0;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .portfolio-section {
+            margin-top: 60px;
+            padding-bottom: 100px;
+        }
+        
+        .portfolio-section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--primary);
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 10px;
+        }
+        
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+            aspect-ratio: 2/3;
+            position: relative;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-item .delete-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 0.9rem;
+            z-index: 10;
+        }
+        
+        .gallery-item:hover .delete-btn {
+            opacity: 1;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+        
+        .empty-state i {
+            font-size: 6rem;
+            margin-bottom: 30px;
+            opacity: 0.3;
+            color: var(--primary);
+        }
+        
+        .empty-state h3 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .password-form {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .password-form input {
+            flex: 1;
+            min-width: 150px;
+            padding: 8px 12px;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.8rem;
+            border: 1px solid transparent;
+        }
+        
+        .password-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .password-form input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+            opacity: 0.7;
+            font-size: 1.2rem;
+            color: #aaa;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.4rem;
+            }
+            
+            .upload-container {
+                flex-direction: column;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            
+            .password-form {
+                flex-direction: column;
+            }
+            
+            .password-form input {
+                width: 100%;
+            }
+            
+            .admin-panel {
+                width: 90%;
+                right: 5%;
+                top: 10px;
+            }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: var(--success);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transform: translateX(120%);
+            transition: transform 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background: var(--danger);
+        }
+        
+        .password-toggle {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .toggle-icon {
+            position: absolute;
+            right: 12px;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+        }
+        
+        .admin-info {
+            margin-top: 10px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            font-size: 0.7rem;
+            color: #bbb;
+        }
+        
+        .logout-btn {
+            margin-top: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            font-size: 0.7rem;
+        }
+        
+        /* Стили для описания фото */
+        .photo-description {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 5;
+            font-size: 0.7rem;
+        }
+        
+        .gallery-item:hover .photo-description {
+            transform: translateY(0);
+        }
+        
+        .description-input {
+            width: 100%;
+            margin-top: 8px;
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 0.7rem;
+        }
+        
+        .description-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Новые стили для ссылки общего доступа */
+        .share-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .share-section h3 {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .share-link-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .share-link {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 8px 12px;
+            font-size: 0.7rem;
+            color: white;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50px;
+            padding: 8px 12px;
+            font-size: 0.7rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .files-counter {
+            font-size: 0.7rem;
+            color: #bbb;
+            margin-top: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Добро пожаловать</h1>
+            <p class="subtitle">Я Руслан Камышанов I Graphic Designer</p>
+            <p class="subtitle-bottom">Здесь я делюсь своими лучшими работами</p>
+        </header>
+        
+        <section class="portfolio-section">
+            <h2><i class="fas fa-images"></i> Мои работы</h2>
+            <div class="gallery" id="gallery">
+                <!-- Пример фотографий для демонстрации -->
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Пейзаж">
+                    <div class="photo-description">Пример описания работы. Здесь можно рассказать о проекте, используемых техниках и идее.</div>
+                    <div class="delete-btn" data-index="0">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-image"></i>
+                <h3>Портфолио пусто</h3>
+                <p>Как только вы добавите фотографии через панель администратора, они появятся здесь.</p>
+            </div>
+        </section>
+        
+        <footer>
+            <p>БЛАГОДАРЮ ЗА ВНИМАНИЕ</p>
+        </footer>
+    </div>
+    
+    <!-- Панель администратора в правом верхнем углу -->
+    <div class="admin-panel" id="adminPanel">
+        <h2 onclick="toggleAdminPanel()"><i class="fas fa-lock"></i> Админ-панель</h2>
+        <p>Управление портфолио (только для владельца)</p>
+        
+        <div class="password-form" id="loginForm">
+            <div class="password-toggle">
+                <input type="password" id="passwordInput" placeholder="Пароль">
+                <span class="toggle-icon" id="togglePassword"><i class="fas fa-eye"></i></span>
+            </div>
+            <button class="btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Войти</button>
+        </div>
+        
+        <div id="adminControls" style="display: none;">
+            <div class="upload-container">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Перетащите фото или нажмите кнопку (до 100 файлов)</p>
+                    <button class="btn" id="selectFilesBtn"><i class="fas fa-folder-open"></i> Выбрать</button>
+                    <input type="file" id="fileInput" accept="image/*" multiple>
+                    <div class="files-counter" id="filesCounter">Файлы не выбраны</div>
+                </div>
+            </div>
+
+            <!-- Секция для ссылки общего доступа -->
+            <div class="share-section">
+                <h3><i class="fas fa-share-alt"></i> Ссылка для общего доступа</h3>
+                <div class="share-link-container">
+                    <div class="share-link" id="shareLink">https://example.com/portfolio</div>
+                    <button class="copy-btn" id="copyBtn"><i class="fas fa-copy"></i> Копировать</button>
+                </div>
+            </div>
+            
+            <div class="admin-info">
+                <p><i class="fas fa-info-circle"></i> Режим администратора. Изменения сохраняются автоматически.</p>
+                <button class="btn logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i> <span id="notificationText">Фото добавлено!</span>
+    </div>
+
+    <script>
+        // Пароль для доступа к панели администратора
+        const ADMIN_PASSWORD = "myportfolio123";
+        
+        // Элементы DOM
+        const passwordInput = document.getElementById('passwordInput');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginForm = document.getElementById('loginForm');
+        const adminControls = document.getElementById('adminControls');
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const selectFilesBtn = document.getElementById('selectFilesBtn');
+        const gallery = document.getElementById('gallery');
+        const emptyState = document.getElementById('emptyState');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        const togglePassword = document.getElementById('togglePassword');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminPanel = document.getElementById('adminPanel');
+        const filesCounter = document.getElementById('filesCounter');
+        const shareLink = document.getElementById('shareLink');
+        const copyBtn = document.getElementById('copyBtn');
+        
+        // Массив для хранения фотографий и их описаний
+        let portfolioPhotos = JSON.parse(localStorage.getItem('portfolioPhotos')) || [];
+        
+        // Флаг авторизации администратора
+        let isAdminLoggedIn = false;
+        
+        // Функция переключения видимости панели администратора
+        function toggleAdminPanel() {
+            adminPanel.classList.toggle('expanded');
+        }
+        
+        // Функция показа уведомления
+        function showNotification(message, isError = false) {
+            notificationText.textContent = message;
+            if (isError) {
+                notification.classList.add('error');
+            } else {
+                notification.classList.remove('error');
+            }
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Функция отображения фотографий
+        function displayPhotos() {
+            gallery.innerHTML = '';
+            
+            if (portfolioPhotos.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            portfolioPhotos.forEach((photo, index) => {
+                const photoElement = document.createElement('div');
+                photoElement.className = 'gallery-item';
+                photoElement.innerHTML = `
+                    <img src="${photo.image}" alt="Работа ${index + 1}">
+                    <div class="photo-description">${photo.description || 'Описание отсутствует'}</div>
+                    ${isAdminLoggedIn ? 
+                        `<div class="delete-btn" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </div>` 
+                        : ''}
+                `;
+                gallery.appendChild(photoElement);
+            });
+            
+            // Добавляем обработчики событий для кнопок удаления
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const index = parseInt(this.getAttribute('data-index'));
+                    deletePhoto(index);
+                });
+            });
+        }
+        
+        // Функция удаления фотографии
+        function deletePhoto(index) {
+            if (!isAdminLoggedIn) {
+                showNotification('Только администратор может удалять изображения', true);
+                return;
+            }
+            
+            portfolioPhotos.splice(index, 1);
+            localStorage.setItem('portfolioPhotos', JSON.stringify(portfolioPhotos));
+            displayPhotos();
+            showNotification('Фото удалено!');
+        }
+        
+        // Функция добавления фотографии
+        function addPhoto(file) {
+            if (!isAdminLoggedIn) {
+                showNotification('Только администратор может добавлять изображения', true);
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const description = prompt('Описание для этой работы:', '');
+                
+                portfolioPhotos.push({
+                    image: e.target.result,
+                    description: description || ''
+                });
+                
+                localStorage.setItem('portfolioPhotos', JSON.stringify(portfolioPhotos));
+                displayPhotos();
+                showNotification('Фото добавлено!');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // Обработчик входа в панель администратора
+        loginBtn.addEventListener('click', function() {
+            if (passwordInput.value === ADMIN_PASSWORD) {
+                isAdminLoggedIn = true;
+                adminControls.style.display = 'block';
+                loginForm.style.display = 'none';
+                adminPanel.classList.add('expanded');
+                showNotification('Доступ разрешен');
+                displayPhotos(); // Обновляем отображение с кнопками удаления
+                updateShareLink(); // Обновляем ссылку для общего доступа
+            } else {
+                showNotification('Неверный пароль!', true);
+                passwordInput.value = '';
+            }
+        });
+        
+        // Обработчик выхода из системы
+        logoutBtn.addEventListener('click', function() {
+            isAdminLoggedIn = false;
+            adminControls.style.display = 'none';
+            loginForm.style.display = 'flex';
+            passwordInput.value = '';
+            showNotification('Вы вышли');
+            displayPhotos(); // Обновляем отображение без кнопок удаления
+        });
+        
+        // Обработчик нажатия на кнопку выбора файлов
+        selectFilesBtn.addEventListener('click', function() {
+            fileInput.click();
+        });
+        
+        // Обработчик выбора файлов
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                // Обновляем счетчик файлов
+                updateFilesCounter(this.files.length);
+                
+                // Ограничение на количество файлов (максимум 100)
+                if (this.files.length > 100) {
+                    showNotification('Можно загрузить не более 100 файлов за раз', true);
+                    this.value = '';
+                    updateFilesCounter(0);
+                    return;
+                }
+                
+                let loadedCount = 0;
+                let errorCount = 0;
+                
+                for (let i = 0; i < this.files.length; i++) {
+                    if (this.files[i].type.startsWith('image/')) {
+                        addPhoto(this.files[i]);
+                        loadedCount++;
+                    } else {
+                        errorCount++;
+                    }
+                }
+                
+                if (errorCount > 0) {
+                    showNotification(`Загружено ${loadedCount} из ${this.files.length}. ${errorCount} не изображения.`, errorCount === this.files.length);
+                } else {
+                    showNotification(`Успешно загружено ${loadedCount} файлов`);
+                }
+                
+                this.value = '';
+                updateFilesCounter(0);
+            }
+        });
+        
+        // Обновление счетчика выбранных файлов
+        function updateFilesCounter(count) {
+            if (count === 0) {
+                filesCounter.textContent = 'Файлы не выбраны';
+            } else {
+                filesCounter.textContent = `Выбрано файлов: ${count}`;
+            }
+        }
+        
+        // Обработчики drag and drop
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'var(--primary)';
+            this.style.background = 'rgba(78, 84, 200, 0.15)';
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            this.style.background = 'rgba(0, 0, 0, 0.2)';
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            this.style.background = 'rgba(0, 0, 0, 0.2)';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                // Ограничение на количество файлов (максимум 100)
+                if (files.length > 100) {
+                    showNotification('Можно загрузить не более 100 файлов за раз', true);
+                    return;
+                }
+                
+                let loadedCount = 0;
+                let errorCount = 0;
+                
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].type.startsWith('image/')) {
+                        addPhoto(files[i]);
+                        loadedCount++;
+                    } else {
+                        errorCount++;
+                    }
+                }
+                
+                if (errorCount > 0) {
+                    showNotification(`Загружено ${loadedCount} из ${files.length}. ${errorCount} не изображения.`, errorCount === files.length);
+                } else {
+                    showNotification(`Успешно загружено ${loadedCount} файлов`);
+                }
+            }
+        });
+        
+        // Переключение видимости пароля
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+        
+        // Автоматический вход при нажатии Enter в поле пароля
+        passwordInput.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                loginBtn.click();
+            }
+        });
+        
+        // Обновление ссылки для общего доступа
+        function updateShareLink() {
+            const currentUrl = window.location.href.split('?')[0];
+            shareLink.textContent = currentUrl;
+        }
+        
+        // Копирование ссылки в буфер обмена
+        copyBtn.addEventListener('click', function() {
+            navigator.clipboard.writeText(shareLink.textContent)
+                .then(() => {
+                    showNotification('Ссылка скопирована в буфер обмена');
+                })
+                .catch(err => {
+                    showNotification('Не удалось скопировать ссылку', true);
+                    console.error('Ошибка копирования: ', err);
+                });
+        });
+        
+        // Инициализация отображения фотографий
+        displayPhotos();
+        updateShareLink();
+    </script>
+</body>
+</html>
